@@ -57,8 +57,7 @@ export default function HomePage() {
           <p className="eyebrow">Privatøkonomi gjort enklere</p>
           <h1>Få en enkel oversikt over hva du har å rutte med hver måned.</h1>
           <p className="lead">
-            Samle inntekt, faste kostnader og vanlige utgifter på ett sted, så ser
-            du raskt hva som er brukt og hva du fortsatt har igjen.
+            Samle inntekt og utgifter på ett sted, så ser du raskt hva som er brukt og hva du har igjen denne måneden.
           </p>
 
           <div className="trust-list" aria-label="Hvorfor tjenesten er enkel å stole på">
@@ -98,10 +97,14 @@ export default function HomePage() {
           </div>
           <div className="summary-row total">
             <span>Igjen denne måneden</span>
-            <strong>9 802 kr</strong>
+            <strong>12 802 kr</strong>
+          </div>
+          <div className="summary-row total">
+            <span>Mulig å spare</span>
+            <strong>12 802 kr</strong>
           </div>
           <p className="summary-note">
-            Du ser raskt hva som er satt av, hva som er brukt og hva du fortsatt har igjen denne måneden.
+            Du ser raskt hva som er brukt, hva du har igjen denne måneden og hva som kan være mulig å spare.
           </p>
         </div>
       </section>

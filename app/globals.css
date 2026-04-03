@@ -288,8 +288,18 @@ a {
   margin-top: 1rem;
 }
 
-.app-page-shell .app-grid-metrics:first-of-type {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+.overview-metrics-grid {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.budget-primary-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.status-note {
+  margin-top: 0.9rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid rgba(73, 52, 35, 0.1);
 }
 
 .metric-card h2 {
@@ -632,7 +642,7 @@ a {
 }
 
 .section {
-  margin-top: 1.5rem;
+  margin-top: 1.75rem;
 }
 
 .section-heading {
@@ -967,7 +977,11 @@ a {
   }
 
   .page-shell {
-    padding: 1rem 0 3rem;
+    padding: 1rem 0 3.4rem;
+  }
+
+  .section {
+    margin-top: 1.25rem;
   }
 
   .form-grid {
@@ -1008,6 +1022,12 @@ a {
   .summary-note,
   .helper-text {
     font-size: 0.96rem;
+  }
+
+  .lead,
+  .page-text,
+  .summary-note {
+    line-height: 1.7;
   }
 
   .trust-band {

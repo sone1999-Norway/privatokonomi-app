@@ -12,6 +12,7 @@ import {
   calculateVariableExpenses,
   defaultBudgetFormData,
   formatCurrency,
+  getSavingsStatusMessage,
   readBudgetFromStorage,
   readVariableExpensesFromStorage,
   saveVariableExpensesToStorage,
@@ -74,11 +75,15 @@ export default function BudgetPage() {
         storedBudget.income,
         storedBudget.fixedExpenses,
         variableExpenses,
-        storedBudget.savingsGoal,
       ),
-    [storedBudget.fixedExpenses, storedBudget.income, storedBudget.savingsGoal, variableExpenses],
+    [storedBudget.fixedExpenses, storedBudget.income, variableExpenses],
+  );
+  const totalExpenses = useMemo(
+    () => storedBudget.fixedExpenses + variableExpenses,
+    [storedBudget.fixedExpenses, variableExpenses],
   );
   const statusText = leftThisMonth > 0 ? monthlyOverview.status : "Strammere måned";
+  const savingsMessage = getSavingsStatusMessage(storedBudget.savingsGoal, leftThisMonth);
 
   function resetExpenseForm() {
     setExpenseForm({
@@ -194,17 +199,29 @@ export default function BudgetPage() {
           <p className="eyebrow">Budsjettstatus</p>
           <h2>Du har {formatCurrency(leftThisMonth)} igjen denne måneden</h2>
           <p>
-            Når faste utgifter, variable utgifter og sparing er satt opp, ser du
-            raskt hva du fortsatt har å rutte med.
+            Når faste og variable utgifter er satt opp, ser du hva du fortsatt har
+            igjen denne måneden og hva som kan være mulig å spare.
           </p>
+          <p className="status-note">{savingsMessage}</p>
         </div>
       </section>
 
-      <section className="app-grid-metrics">
+      <section className="app-grid-metrics budget-primary-grid">
         <article className="feature-card metric-card">
           <p className="eyebrow">Inntekt</p>
           <h2>{formatCurrency(storedBudget.income)}</h2>
         </article>
+        <article className="feature-card metric-card">
+          <p className="eyebrow">Totale utgifter</p>
+          <h2>{formatCurrency(totalExpenses)}</h2>
+        </article>
+        <article className="feature-card metric-card">
+          <p className="eyebrow">Igjen denne måneden</p>
+          <h2>{formatCurrency(leftThisMonth)}</h2>
+        </article>
+      </section>
+
+      <section className="app-grid-metrics budget-summary-grid">
         <article className="feature-card metric-card">
           <p className="eyebrow">Faste utgifter</p>
           <h2>{formatCurrency(storedBudget.fixedExpenses)}</h2>
@@ -213,15 +230,12 @@ export default function BudgetPage() {
           <p className="eyebrow">Variable utgifter</p>
           <h2>{formatCurrency(variableExpenses)}</h2>
         </article>
-      </section>
-
-      <section className="app-grid-metrics budget-summary-grid">
         <article className="feature-card metric-card">
-          <p className="eyebrow">Sparemål</p>
+          <p className="eyebrow">Sparemål (mål)</p>
           <h2>{formatCurrency(storedBudget.savingsGoal)}</h2>
         </article>
         <article className="feature-card metric-card accent-metric-card">
-          <p className="eyebrow">Igjen denne måneden</p>
+          <p className="eyebrow">Mulig å spare</p>
           <h2>{formatCurrency(leftThisMonth)}</h2>
         </article>
         <article className="feature-card metric-card">
@@ -473,10 +487,14 @@ export default function BudgetPage() {
             </div>
             <div className="budget-breakdown-row">
               <span>Sparemål</span>
-              <strong>-{formatCurrency(storedBudget.savingsGoal)}</strong>
+              <strong>{formatCurrency(storedBudget.savingsGoal)}</strong>
             </div>
             <div className="budget-breakdown-row budget-breakdown-total">
               <span>Igjen denne måneden</span>
+              <strong>{formatCurrency(leftThisMonth)}</strong>
+            </div>
+            <div className="budget-breakdown-row budget-breakdown-total">
+              <span>Mulig å spare</span>
               <strong>{formatCurrency(leftThisMonth)}</strong>
             </div>
           </div>

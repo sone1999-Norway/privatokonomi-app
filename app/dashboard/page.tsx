@@ -9,6 +9,7 @@ import {
   calculateVariableExpenses,
   defaultBudgetFormData,
   formatCurrency,
+  getSavingsStatusMessage,
   readBudgetFromStorage,
   readVariableExpensesFromStorage,
   type VariableExpense,
@@ -55,24 +56,25 @@ export default function DashboardPage() {
         storedBudget.income,
         storedBudget.fixedExpenses,
         variableExpenses,
-        storedBudget.savingsGoal,
       ),
-    [storedBudget.fixedExpenses, storedBudget.income, storedBudget.savingsGoal, variableExpenses],
+    [storedBudget.fixedExpenses, storedBudget.income, variableExpenses],
   );
+  const savingsMessage = getSavingsStatusMessage(storedBudget.savingsGoal, leftThisMonth);
 
   const metrics = [
     { label: "Inntekt", value: formatCurrency(storedBudget.income) },
     { label: "Totale utgifter", value: formatCurrency(totalExpenses) },
-    { label: "Sparemål", value: formatCurrency(storedBudget.savingsGoal) },
     { label: "Igjen denne måneden", value: formatCurrency(leftThisMonth) },
+    { label: "Sparemål (mål)", value: formatCurrency(storedBudget.savingsGoal) },
+    { label: "Mulig å spare", value: formatCurrency(leftThisMonth) },
   ];
 
   const monthStatus = [
     leftThisMonth > 0
-      ? `Du har fortsatt ${formatCurrency(leftThisMonth)} igjen å bruke denne måneden.`
+      ? `Du har fortsatt ${formatCurrency(leftThisMonth)} igjen denne måneden.`
       : "Denne måneden ser strammere ut enn planlagt.",
     "De største faste utgiftene er allerede tatt høyde for.",
-    "Hvis du følger opp småkjøp underveis, blir oversikten mer presis.",
+    savingsMessage,
   ];
   const latestEntries = [
     recentEntries[0],
@@ -95,7 +97,7 @@ export default function DashboardPage() {
           <h1 className="page-title">Månedsoversikt</h1>
           <p>
             Her ser du det viktigste samlet på ett sted: hva som har kommet inn,
-            hva som er brukt, hva du vil sette av til sparing og hva du har igjen.
+            hva som er brukt, hva som er igjen denne måneden og hva som kan være mulig å spare.
           </p>
         </div>
 
@@ -108,12 +110,12 @@ export default function DashboardPage() {
           </h2>
           <p>
             Du har oversikt over både faste og variable utgifter, og ser tydelig
-            hva du fortsatt har igjen å disponere.
+            hva du fortsatt har igjen å disponere uten at sparemålet trekkes automatisk fra.
           </p>
         </div>
       </section>
 
-      <section className="app-grid-metrics">
+      <section className="app-grid-metrics overview-metrics-grid">
         {metrics.map((metric) => (
           <article key={metric.label} className="feature-card metric-card">
             <p className="eyebrow">{metric.label}</p>
@@ -180,10 +182,14 @@ export default function DashboardPage() {
               </div>
               <div className="budget-breakdown-row">
                 <span>Sparemål</span>
-                <strong>-{formatCurrency(storedBudget.savingsGoal)}</strong>
+                <strong>{formatCurrency(storedBudget.savingsGoal)}</strong>
               </div>
               <div className="budget-breakdown-row budget-breakdown-total">
                 <span>Igjen denne måneden</span>
+                <strong>{formatCurrency(leftThisMonth)}</strong>
+              </div>
+              <div className="budget-breakdown-row budget-breakdown-total">
+                <span>Mulig å spare</span>
                 <strong>{formatCurrency(leftThisMonth)}</strong>
               </div>
             </div>

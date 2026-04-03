@@ -4,7 +4,7 @@ export const monthlyOverview = {
   variableExpenses: "7 500 kr",
   totalExpenses: "22 198 kr",
   savingsGoal: "3 000 kr",
-  leftThisMonth: "9 802 kr",
+  leftThisMonth: "12 802 kr",
   status: "God balanse",
 };
 

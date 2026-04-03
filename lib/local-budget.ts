@@ -119,9 +119,16 @@ export function calculateLeftThisMonth(
   income: number,
   fixedExpenses: number,
   variableExpenses: number,
-  savingsGoal: number,
 ) {
-  return income - fixedExpenses - variableExpenses - savingsGoal;
+  return income - fixedExpenses - variableExpenses;
+}
+
+export function getSavingsStatusMessage(savingsGoal: number, possibleSavings: number) {
+  if (savingsGoal > possibleSavings) {
+    return "Sparemålet er høyere enn det du har igjen denne måneden.";
+  }
+
+  return "Sparemålet ditt er innenfor det som ser mulig ut denne måneden.";
 }
 
 export function formatCurrency(value: number) {

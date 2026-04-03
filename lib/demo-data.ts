@@ -9,10 +9,10 @@ export const monthlyOverview = {
 };
 
 export const fixedExpenseItems = [
-  { name: "Bolig", amount: "12 000 kr" },
-  { name: "Strøm og nettleie", amount: "1 500 kr" },
-  { name: "Mobil og internett", amount: "799 kr" },
-  { name: "Abonnementer", amount: "399 kr" },
+  { name: "Bolig", amount: 12000 },
+  { name: "Strøm og nettleie", amount: 1500 },
+  { name: "Mobil og internett", amount: 799 },
+  { name: "Abonnementer", amount: 399 },
 ];
 
 export const variableExpenseItems = [
@@ -20,6 +20,12 @@ export const variableExpenseItems = [
   { category: "Transport", amount: 1200, note: "Buss, tog og småreiser" },
   { category: "Helse og apotek", amount: 600, note: "Medisiner og egenandeler" },
   { category: "Fritid", amount: 1200, note: "Kafe, kino og aktiviteter" },
+];
+
+export const savingsItems = [
+  { name: "Fond og aksjer", amount: 1200 },
+  { name: "BSU", amount: 1000 },
+  { name: "Sparekonto", amount: 800 },
 ];
 
 export const recentEntries = [

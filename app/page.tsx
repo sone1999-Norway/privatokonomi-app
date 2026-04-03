@@ -91,20 +91,12 @@ export default function HomePage() {
             <span>Utgifter</span>
             <strong>22 198 kr</strong>
           </div>
-          <div className="summary-row">
-            <span>Sparemål</span>
-            <strong>3 000 kr</strong>
-          </div>
           <div className="summary-row total">
             <span>Igjen denne måneden</span>
             <strong>12 802 kr</strong>
           </div>
-          <div className="summary-row total">
-            <span>Mulig å spare</span>
-            <strong>12 802 kr</strong>
-          </div>
           <p className="summary-note">
-            Du ser raskt hva som er brukt, hva du har igjen denne måneden og hva som kan være mulig å spare.
+            Du ser raskt hva som er brukt og hva du har igjen denne måneden.
           </p>
         </div>
       </section>

@@ -307,6 +307,7 @@ a {
 }
 
 .budget-summary-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   margin-top: 1rem;
 }
 
@@ -329,6 +330,25 @@ a {
 .savings-status-card h2 {
   font-size: clamp(1.2rem, 2.2vw, 1.55rem);
   line-height: 1.28;
+}
+
+.savings-status-card p {
+  margin-top: 0.55rem;
+}
+
+.savings-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.savings-row {
+  align-items: center;
+}
+
+.savings-total-note {
+  margin-top: 1.2rem;
 }
 
 .accent-metric-card {
@@ -392,6 +412,14 @@ a {
 
 .budget-breakdown {
   margin-top: 1rem;
+}
+
+.budget-insight-grid {
+  align-items: stretch;
+}
+
+.budget-summary-card {
+  max-width: none;
 }
 
 .budget-breakdown-row {

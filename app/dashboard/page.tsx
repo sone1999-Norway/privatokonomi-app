@@ -9,7 +9,6 @@ import {
   calculateVariableExpenses,
   defaultBudgetFormData,
   formatCurrency,
-  getSavingsStatusMessage,
   readBudgetFromStorage,
   readVariableExpensesFromStorage,
   type VariableExpense,
@@ -59,14 +58,10 @@ export default function DashboardPage() {
       ),
     [storedBudget.fixedExpenses, storedBudget.income, variableExpenses],
   );
-  const savingsMessage = getSavingsStatusMessage(storedBudget.savingsGoal, leftThisMonth);
-
   const metrics = [
     { label: "Inntekt", value: formatCurrency(storedBudget.income) },
     { label: "Totale utgifter", value: formatCurrency(totalExpenses) },
     { label: "Igjen denne måneden", value: formatCurrency(leftThisMonth) },
-    { label: "Sparemål (mål)", value: formatCurrency(storedBudget.savingsGoal) },
-    { label: "Mulig å spare", value: formatCurrency(leftThisMonth) },
   ];
 
   const monthStatus = [
@@ -74,7 +69,7 @@ export default function DashboardPage() {
       ? `Du har fortsatt ${formatCurrency(leftThisMonth)} igjen denne måneden.`
       : "Denne måneden ser strammere ut enn planlagt.",
     "De største faste utgiftene er allerede tatt høyde for.",
-    savingsMessage,
+    "Hvis du vil følge sparing, gjør du det på budsjettsiden.",
   ];
   const latestEntries = [
     recentEntries[0],
@@ -97,7 +92,7 @@ export default function DashboardPage() {
           <h1 className="page-title">Månedsoversikt</h1>
           <p>
             Her ser du det viktigste samlet på ett sted: hva som har kommet inn,
-            hva som er brukt, hva som er igjen denne måneden og hva som kan være mulig å spare.
+            hva som er brukt og hva som er igjen denne måneden.
           </p>
         </div>
 
@@ -180,16 +175,8 @@ export default function DashboardPage() {
                 <span>Totale utgifter</span>
                 <strong>-{formatCurrency(totalExpenses)}</strong>
               </div>
-              <div className="budget-breakdown-row">
-                <span>Sparemål</span>
-                <strong>{formatCurrency(storedBudget.savingsGoal)}</strong>
-              </div>
               <div className="budget-breakdown-row budget-breakdown-total">
                 <span>Igjen denne måneden</span>
-                <strong>{formatCurrency(leftThisMonth)}</strong>
-              </div>
-              <div className="budget-breakdown-row budget-breakdown-total">
-                <span>Mulig å spare</span>
                 <strong>{formatCurrency(leftThisMonth)}</strong>
               </div>
             </div>

@@ -14,9 +14,9 @@ const features = [
 ];
 
 const trustPoints = [
-  "Enkel å forstå, også hvis du ikke liker budsjetter og regneark.",
-  "Norsk språk, beløp i kroner og fokus på vanlige hverdagsutgifter.",
-  "Gir deg oversikt uten at du må lære kompliserte økonomibegreper.",
+  "Enkel å forstå, også hvis du ikke liker budsjetter og regneark",
+  "Norsk språk og beløp i kroner",
+  "Oversikt uten kompliserte økonomibegreper",
 ];
 
 const safetyPoints = [
@@ -70,11 +70,11 @@ export default function HomePage() {
           </div>
 
           <div className="hero-actions">
-            <a href="/signup" className="primary-link hero-primary-link">
-              Opprett konto
-            </a>
-            <a href="/onboarding" className="secondary-link">
+            <a href="/onboarding" className="primary-link hero-primary-link">
               Start med oppsettet
+            </a>
+            <a href="/budget" className="secondary-link">
+              Se hvordan budsjettet ser ut
             </a>
             <a href="/dashboard" className="secondary-link">
               Se månedsoversikten
@@ -107,9 +107,12 @@ export default function HomePage() {
       </section>
 
       <section className="trust-band" aria-label="Trygghetspunkter">
+        <div className="trust-band-heading">
+          <p className="eyebrow">Hvorfor dette føles enkelt</p>
+          <h2>En rolig og forståelig start på bedre oversikt</h2>
+        </div>
         {safetyPoints.map((point) => (
           <article key={point.title} className="trust-card">
-            <p className="trust-card-label">Trygghet</p>
             <h3>{point.title}</h3>
             <p>{point.text}</p>
           </article>

@@ -515,23 +515,24 @@ a {
 }
 
 .trust-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  margin-top: 1.2rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.85rem;
+  margin-top: 1.3rem;
 }
 
 .trust-pill {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  min-height: 40px;
-  padding: 0.55rem 0.9rem;
+  min-height: 72px;
+  padding: 0.9rem 1rem;
   border: 1px solid var(--line);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.55);
+  border-radius: 20px;
+  background: linear-gradient(180deg, rgba(255, 252, 246, 0.86) 0%, rgba(255, 249, 242, 0.78) 100%);
+  box-shadow: var(--shadow);
   color: var(--foreground);
-  font-size: 0.9rem;
-  line-height: 1.4;
+  font-size: 0.92rem;
+  line-height: 1.5;
 }
 
 .primary-link,
@@ -553,7 +554,22 @@ a {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1rem;
-  margin-top: 1rem;
+  margin-top: 1.2rem;
+}
+
+.trust-band-heading {
+  grid-column: 1 / -1;
+  max-width: 58ch;
+}
+
+.trust-band-heading h2 {
+  margin: 0;
+  line-height: 1.06;
+  letter-spacing: -0.03em;
+}
+
+.trust-band-heading p {
+  color: var(--muted);
 }
 
 .trust-card {
@@ -562,15 +578,6 @@ a {
   background: linear-gradient(180deg, rgba(255, 252, 246, 0.88) 0%, rgba(255, 249, 242, 0.82) 100%);
   box-shadow: var(--shadow);
   padding: 1.1rem 1.2rem;
-}
-
-.trust-card-label {
-  margin: 0 0 0.35rem;
-  color: var(--accent-dark);
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
 }
 
 .trust-card h3 {
@@ -908,13 +915,14 @@ a {
   }
 
   .trust-list {
-    gap: 0.5rem;
+    grid-template-columns: 1fr;
+    gap: 0.65rem;
   }
 
   .trust-pill {
     width: 100%;
-    justify-content: center;
-    text-align: center;
+    justify-content: flex-start;
+    text-align: left;
   }
 
   .summary-card,

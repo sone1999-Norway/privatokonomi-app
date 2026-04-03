@@ -310,6 +310,27 @@ a {
   margin-top: 1rem;
 }
 
+.budget-detail-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.savings-goal-section {
+  padding: 1.4rem;
+  border: 1px solid var(--line);
+  border-radius: 28px;
+  background: linear-gradient(180deg, rgba(255, 250, 244, 0.94) 0%, rgba(255, 252, 248, 0.92) 100%);
+  box-shadow: var(--shadow);
+}
+
+.savings-heading {
+  margin-bottom: 0;
+}
+
+.savings-status-card h2 {
+  font-size: clamp(1.2rem, 2.2vw, 1.55rem);
+  line-height: 1.28;
+}
+
 .accent-metric-card {
   background: linear-gradient(180deg, #fff4e6 0%, #fffaf4 100%);
 }
@@ -383,6 +404,30 @@ a {
 
 .budget-breakdown-total {
   color: var(--accent-dark);
+}
+
+.budget-breakdown-note {
+  margin-top: 1rem;
+  padding: 1rem 1.05rem;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.45);
+}
+
+.budget-breakdown-note span,
+.budget-breakdown-note strong {
+  display: block;
+}
+
+.budget-breakdown-note strong {
+  margin-top: 0.25rem;
+  color: var(--foreground);
+}
+
+.budget-breakdown-note p {
+  margin: 0.45rem 0 0;
+  color: var(--muted);
+  line-height: 1.6;
 }
 
 .budget-action-box {

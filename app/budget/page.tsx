@@ -12,7 +12,6 @@ import {
   calculateVariableExpenses,
   defaultBudgetFormData,
   formatCurrency,
-  getSavingsStatusMessage,
   readBudgetFromStorage,
   readVariableExpensesFromStorage,
   saveVariableExpensesToStorage,
@@ -83,7 +82,11 @@ export default function BudgetPage() {
     [storedBudget.fixedExpenses, variableExpenses],
   );
   const statusText = leftThisMonth > 0 ? monthlyOverview.status : "Strammere måned";
-  const savingsMessage = getSavingsStatusMessage(storedBudget.savingsGoal, leftThisMonth);
+  const savingsGap = Math.max(storedBudget.savingsGoal - leftThisMonth, 0);
+  const savingsMessage =
+    leftThisMonth >= storedBudget.savingsGoal
+      ? "Du når sparemålet ditt"
+      : `Du mangler ${formatCurrency(savingsGap)} for å nå sparemålet`;
 
   function resetExpenseForm() {
     setExpenseForm({
@@ -199,10 +202,9 @@ export default function BudgetPage() {
           <p className="eyebrow">Budsjettstatus</p>
           <h2>Du har {formatCurrency(leftThisMonth)} igjen denne måneden</h2>
           <p>
-            Når faste og variable utgifter er satt opp, ser du hva du fortsatt har
-            igjen denne måneden og hva som kan være mulig å spare.
+            Når faste og variable utgifter er satt opp, ser du hva du faktisk har
+            igjen denne måneden før du vurderer hvor mye du ønsker å spare.
           </p>
-          <p className="status-note">{savingsMessage}</p>
         </div>
       </section>
 
@@ -221,7 +223,33 @@ export default function BudgetPage() {
         </article>
       </section>
 
-      <section className="app-grid-metrics budget-summary-grid">
+      <section className="section savings-goal-section">
+        <div className="section-heading savings-heading">
+          <p className="eyebrow">Sparemål</p>
+          <h2>Skille mellom mål og faktisk økonomi</h2>
+          <p>
+            Her ser du hvor mye du ønsker å spare, hva som faktisk er mulig denne måneden,
+            og om målet ser realistisk ut.
+          </p>
+        </div>
+
+        <div className="app-grid-metrics budget-summary-grid">
+          <article className="feature-card metric-card">
+            <p className="eyebrow">Sparemål (mål)</p>
+            <h2>{formatCurrency(storedBudget.savingsGoal)}</h2>
+          </article>
+          <article className="feature-card metric-card accent-metric-card">
+            <p className="eyebrow">Mulig å spare</p>
+            <h2>{formatCurrency(leftThisMonth)}</h2>
+          </article>
+          <article className="feature-card metric-card savings-status-card">
+            <p className="eyebrow">Status</p>
+            <h2>{savingsMessage}</h2>
+          </article>
+        </div>
+      </section>
+
+      <section className="app-grid-metrics budget-detail-grid">
         <article className="feature-card metric-card">
           <p className="eyebrow">Faste utgifter</p>
           <h2>{formatCurrency(storedBudget.fixedExpenses)}</h2>
@@ -229,14 +257,6 @@ export default function BudgetPage() {
         <article className="feature-card metric-card">
           <p className="eyebrow">Variable utgifter</p>
           <h2>{formatCurrency(variableExpenses)}</h2>
-        </article>
-        <article className="feature-card metric-card">
-          <p className="eyebrow">Sparemål (mål)</p>
-          <h2>{formatCurrency(storedBudget.savingsGoal)}</h2>
-        </article>
-        <article className="feature-card metric-card accent-metric-card">
-          <p className="eyebrow">Mulig å spare</p>
-          <h2>{formatCurrency(leftThisMonth)}</h2>
         </article>
         <article className="feature-card metric-card">
           <p className="eyebrow">Enkel status</p>
@@ -485,10 +505,6 @@ export default function BudgetPage() {
               <span>Variable utgifter</span>
               <strong>-{formatCurrency(variableExpenses)}</strong>
             </div>
-            <div className="budget-breakdown-row">
-              <span>Sparemål</span>
-              <strong>{formatCurrency(storedBudget.savingsGoal)}</strong>
-            </div>
             <div className="budget-breakdown-row budget-breakdown-total">
               <span>Igjen denne måneden</span>
               <strong>{formatCurrency(leftThisMonth)}</strong>
@@ -496,6 +512,14 @@ export default function BudgetPage() {
             <div className="budget-breakdown-row budget-breakdown-total">
               <span>Mulig å spare</span>
               <strong>{formatCurrency(leftThisMonth)}</strong>
+            </div>
+            <div className="budget-breakdown-note">
+              <span>Sparemål</span>
+              <strong>{formatCurrency(storedBudget.savingsGoal)}</strong>
+              <p>
+                Sparemålet vises separat som et mål, og trekkes ikke automatisk fra det du
+                faktisk har igjen denne måneden.
+              </p>
             </div>
           </div>
 

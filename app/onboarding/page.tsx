@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import {
   defaultBudgetFormData,
   formatCurrency,
+  getAmountDisplay,
   readBudgetFromStorage,
   saveBudgetToStorage,
 } from "@/lib/local-budget";
@@ -32,12 +33,6 @@ const onboardingSteps = [
   },
 ];
 
-const reassurancePoints = [
-  "Du trenger bare å fylle inn tre tall for å komme i gang.",
-  "Alt kan justeres senere når du vil gjøre oversikten mer presis.",
-  "Målet er å gi deg en enkel start, ikke et komplisert oppsett.",
-];
-
 export default function OnboardingPage() {
   const [currentStep, setCurrentStep] = useState(0);
   const [stepError, setStepError] = useState("");
@@ -50,6 +45,14 @@ export default function OnboardingPage() {
   const step = onboardingSteps[currentStep];
   const progressWidth = `${((currentStep + 1) / onboardingSteps.length) * 100}%`;
   const stepField = currentStep === 0 ? "income" : currentStep === 1 ? "fixedExpenses" : "savingsGoal";
+  const incomePreview = getAmountDisplay(
+    Number(formValues.income) || defaultBudgetFormData.income,
+    "income",
+  );
+  const fixedExpensesPreview = getAmountDisplay(
+    Number(formValues.fixedExpenses) || defaultBudgetFormData.fixedExpenses,
+    "expense",
+  );
 
   useEffect(() => {
     const savedData = readBudgetFromStorage();
@@ -105,18 +108,13 @@ export default function OnboardingPage() {
       <section className="onboarding-hero">
         <div className="onboarding-hero-copy">
           <p className="eyebrow">Start her</p>
-          <h1 className="page-title">Kom i gang på noen få minutter</h1>
-          <p>
-            Vi begynner med det viktigste, slik at du raskt får en oversikt over
-            økonomien din uten å fylle inn mer enn nødvendig.
-          </p>
+          <h1 className="page-title">Kom i gang raskt</h1>
+          <p>Fyll inn tre tall, så er du i gang.</p>
         </div>
 
         <div className="onboarding-status-card">
           <p className="eyebrow">Fremdrift</p>
-          <h2>
-            Steg {currentStep + 1} av {onboardingSteps.length}
-          </h2>
+          <h2>Steg {currentStep + 1} av {onboardingSteps.length}</h2>
           <div className="progress-track" aria-hidden="true">
             <div className="progress-bar" style={{ width: progressWidth }} />
           </div>
@@ -125,10 +123,8 @@ export default function OnboardingPage() {
       </section>
 
       <section className="onboarding-main-grid">
-        <aside className="content-card onboarding-sidebar">
-          <p className="eyebrow">Stegene</p>
-          <h2>Første oppsett</h2>
-          <div className="stack-list">
+        <section className="content-card onboarding-panel">
+          <div className="onboarding-steps-inline" aria-label="Steg i oppsettet">
             {onboardingSteps.map((item, index) => {
               const isActive = index === currentStep;
               const isCompleted = index < currentStep;
@@ -139,28 +135,22 @@ export default function OnboardingPage() {
                   type="button"
                   className={
                     isActive
-                      ? "step-card onboarding-step-active"
+                      ? "onboarding-step-chip onboarding-step-chip-active"
                       : isCompleted
-                        ? "step-card onboarding-step-completed"
-                        : "step-card onboarding-step-button"
+                        ? "onboarding-step-chip onboarding-step-chip-completed"
+                        : "onboarding-step-chip"
                   }
                   onClick={() => setCurrentStep(index)}
                 >
-                  <div className="step-number">{String(index + 1).padStart(2, "0")}</div>
-                  <div className="step-copy">
-                    <h3>{item.title}</h3>
-                    <p>{item.description}</p>
-                  </div>
+                  {item.title}
                 </button>
               );
             })}
           </div>
-        </aside>
 
-        <section className="content-card onboarding-panel">
           <p className="eyebrow">Steg {currentStep + 1}</p>
           <h2>{step.title}</h2>
-          <p className="page-text">{step.description}</p>
+          <p className="page-text onboarding-step-text">{step.description}</p>
 
           <form className="simple-form onboarding-form">
             <label>
@@ -189,14 +179,15 @@ export default function OnboardingPage() {
             {stepError ? <p className="form-error">{stepError}</p> : null}
 
             <div className="onboarding-actions">
-              <button
-                type="button"
-                className="secondary-link button-reset"
-                onClick={() => setCurrentStep((value) => Math.max(value - 1, 0))}
-                disabled={currentStep === 0}
-              >
-                Tilbake
-              </button>
+              {currentStep > 0 ? (
+                <button
+                  type="button"
+                  className="text-action button-reset"
+                  onClick={() => setCurrentStep((value) => Math.max(value - 1, 0))}
+                >
+                  Tilbake
+                </button>
+              ) : <span />}
 
               {currentStep < onboardingSteps.length - 1 ? (
                 <button
@@ -229,44 +220,12 @@ export default function OnboardingPage() {
               )}
             </div>
           </form>
-        </section>
-      </section>
-
-      <section className="trust-band onboarding-trust-band" aria-label="Trygg oppstart">
-        {reassurancePoints.map((point) => (
-          <article key={point} className="trust-card">
-            <p className="trust-card-label">God start</p>
-            <p>{point}</p>
-          </article>
-        ))}
-      </section>
-
-      <section className="section">
-        <div className="content-card onboarding-next-card">
-          <p className="eyebrow">Neste steg</p>
-          <h2>Etter oppstarten går du videre til budsjettet ditt</h2>
-          <p>
-            Når du har lagt inn inntekt, faste utgifter og sparemål, får du en enkel oversikt
-            over hva som er satt opp og hva du har igjen denne måneden.
-          </p>
-          <div className="onboarding-preview">
-            <div className="budget-breakdown-row">
-              <span>Månedlig inntekt</span>
-              <strong>{formatCurrency(Number(formValues.income) || defaultBudgetFormData.income)}</strong>
-            </div>
-            <div className="budget-breakdown-row">
-              <span>Faste utgifter</span>
-              <strong>{formatCurrency(Number(formValues.fixedExpenses) || defaultBudgetFormData.fixedExpenses)}</strong>
-            </div>
-            <div className="budget-breakdown-row">
-              <span>Sparemål</span>
-              <strong>{formatCurrency(Number(formValues.savingsGoal) || defaultBudgetFormData.savingsGoal)}</strong>
-            </div>
+          <div className="onboarding-preview-inline">
+            <span>Inntekt <strong className={incomePreview.toneClassName}>{incomePreview.text}</strong></span>
+            <span>Faste utgifter <strong className={fixedExpensesPreview.toneClassName}>{fixedExpensesPreview.text}</strong></span>
+            <span>Sparemål <strong>{formatCurrency(Number(formValues.savingsGoal) || defaultBudgetFormData.savingsGoal)}</strong></span>
           </div>
-          <a href="/budget" className="secondary-link">
-            Fortsett til budsjett
-          </a>
-        </div>
+        </section>
       </section>
     </main>
   );

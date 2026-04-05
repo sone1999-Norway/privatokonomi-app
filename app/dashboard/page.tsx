@@ -8,7 +8,7 @@ import {
   calculateTotalExpenses,
   calculateVariableExpenses,
   defaultBudgetFormData,
-  formatCurrency,
+  getAmountDisplay,
   readBudgetFromStorage,
   readVariableExpensesFromStorage,
   type VariableExpense,
@@ -58,19 +58,15 @@ export default function DashboardPage() {
       ),
     [storedBudget.fixedExpenses, storedBudget.income, variableExpenses],
   );
+  const incomeDisplay = getAmountDisplay(storedBudget.income, "income");
+  const totalExpensesDisplay = getAmountDisplay(totalExpenses, "expense");
+  const leftThisMonthDisplay = getAmountDisplay(leftThisMonth, "balance");
   const metrics = [
-    { label: "Inntekt", value: formatCurrency(storedBudget.income) },
-    { label: "Totale utgifter", value: formatCurrency(totalExpenses) },
-    { label: "Igjen denne måneden", value: formatCurrency(leftThisMonth) },
+    { label: "Inntekt", ...incomeDisplay },
+    { label: "Totale utgifter", ...totalExpensesDisplay },
+    { label: "Igjen denne måneden", ...leftThisMonthDisplay },
   ];
 
-  const monthStatus = [
-    leftThisMonth > 0
-      ? `Du har fortsatt ${formatCurrency(leftThisMonth)} igjen denne måneden.`
-      : "Denne måneden ser strammere ut enn planlagt.",
-    "De største faste utgiftene er allerede tatt høyde for.",
-    "Hvis du vil følge sparing, gjør du det på budsjettsiden.",
-  ];
   const latestEntries = [
     recentEntries[0],
     recentEntries[1],
@@ -80,7 +76,7 @@ export default function DashboardPage() {
       .map((item) => ({
         name: item.note || item.category,
         category: item.category,
-        amount: `-${formatCurrency(item.amount)}`,
+        amount: -item.amount,
       })),
   ];
 
@@ -90,10 +86,7 @@ export default function DashboardPage() {
         <div className="app-hero-copy">
           <p className="eyebrow">Oversikt</p>
           <h1 className="page-title">Månedsoversikt</h1>
-          <p>
-            Her ser du det viktigste samlet på ett sted: hva som har kommet inn,
-            hva som er brukt og hva som er igjen denne måneden.
-          </p>
+          <p>Se hva som har kommet inn, hva som er brukt og hva du har igjen.</p>
         </div>
 
         <div className="app-status-card">
@@ -104,8 +97,7 @@ export default function DashboardPage() {
               : "Denne måneden krever litt mer kontroll"}
           </h2>
           <p>
-            Du har oversikt over både faste og variable utgifter, og ser tydelig
-            hva du fortsatt har igjen å disponere uten at sparemålet trekkes automatisk fra.
+            Du ser raskt om måneden fortsatt er under kontroll.
           </p>
         </div>
       </section>
@@ -114,7 +106,7 @@ export default function DashboardPage() {
         {metrics.map((metric) => (
           <article key={metric.label} className="feature-card metric-card">
             <p className="eyebrow">{metric.label}</p>
-            <h2>{metric.value}</h2>
+            <h2 className={metric.toneClassName}>{metric.text}</h2>
           </article>
         ))}
       </section>
@@ -138,7 +130,17 @@ export default function DashboardPage() {
                   <strong>{transaction.name}</strong>
                   <p>{transaction.category}</p>
                 </div>
-                <strong>{transaction.amount}</strong>
+                <strong
+                  className={getAmountDisplay(
+                    transaction.amount,
+                    transaction.amount >= 0 ? "income" : "expense",
+                  ).toneClassName}
+                >
+                  {getAmountDisplay(
+                    transaction.amount,
+                    transaction.amount >= 0 ? "income" : "expense",
+                  ).text}
+                </strong>
               </div>
             ))}
           </div>
@@ -151,53 +153,17 @@ export default function DashboardPage() {
         </div>
 
         <aside className="app-side-stack">
-          <div className="content-card accent-card app-panel">
-            <p className="eyebrow">Denne måneden</p>
-            <h2>En enkel oppsummering</h2>
-            <div className="stack-list">
-              {monthStatus.map((item) => (
-                <div key={item} className="soft-note">
-                  {item}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="content-card app-panel">
-            <p className="eyebrow">Tallene dine</p>
-            <h2>Slik ser måneden ut akkurat nå</h2>
-            <div className="budget-breakdown">
-              <div className="budget-breakdown-row">
-                <span>Inntekt</span>
-                <strong>{formatCurrency(storedBudget.income)}</strong>
-              </div>
-              <div className="budget-breakdown-row">
-                <span>Totale utgifter</span>
-                <strong>-{formatCurrency(totalExpenses)}</strong>
-              </div>
-              <div className="budget-breakdown-row budget-breakdown-total">
-                <span>Igjen denne måneden</span>
-                <strong>{formatCurrency(leftThisMonth)}</strong>
-              </div>
-            </div>
-          </div>
-
           <div className="content-card app-panel">
             <p className="eyebrow">Neste steg</p>
-            <h2>Hold oversikten oppdatert</h2>
-            <p>
-              Registrer nye utgifter underveis, så blir månedsbildet mer presist og
-              lettere å følge uke for uke.
-            </p>
+            <h2>Legg til nye utgifter fortløpende</h2>
             <div className="action-row">
-              <a href="/budget" className="secondary-link compact-link">
-                Gå tilbake til budsjett
+              <a href="/budget" className="primary-link compact-link">
+                Gå til budsjett
               </a>
-              <ResetBudgetButton className="secondary-link button-reset compact-link" />
+              <a href="/saving" className="secondary-link compact-link">
+                Se sparing
+              </a>
             </div>
-            <p className="helper-text">
-              Velg dette hvis du vil slette de lagrede tallene og starte oppsettet på nytt.
-            </p>
           </div>
         </aside>
       </section>

@@ -232,3 +232,68 @@ export function getSavingsStatusMessage(savingsGoal: number, possibleSavings: nu
 export function formatCurrency(value: number) {
   return `${new Intl.NumberFormat("nb-NO").format(value)} kr`;
 }
+
+export type AmountKind = "income" | "expense" | "balance" | "saving" | "neutral";
+
+export function getAmountDisplay(value: number, kind: AmountKind = "neutral") {
+  if (kind === "income") {
+    return {
+      text: formatCurrency(Math.abs(value)),
+      toneClassName: "amount-positive",
+    };
+  }
+
+  if (kind === "expense") {
+    return {
+      text: `-${formatCurrency(Math.abs(value))}`,
+      toneClassName: "amount-negative",
+    };
+  }
+
+  if (kind === "saving") {
+    if (value < 0) {
+      return {
+        text: `-${formatCurrency(Math.abs(value))}`,
+        toneClassName: "amount-negative",
+      };
+    }
+
+    if (value > 0) {
+      return {
+        text: formatCurrency(value),
+        toneClassName: "amount-positive",
+      };
+    }
+
+    return {
+      text: formatCurrency(0),
+      toneClassName: "",
+    };
+  }
+
+  if (kind === "balance") {
+    if (value < 0) {
+      return {
+        text: `-${formatCurrency(Math.abs(value))}`,
+        toneClassName: "amount-negative",
+      };
+    }
+
+    if (value > 0) {
+      return {
+        text: formatCurrency(value),
+        toneClassName: "amount-positive",
+      };
+    }
+
+    return {
+      text: formatCurrency(0),
+      toneClassName: "",
+    };
+  }
+
+  return {
+    text: formatCurrency(value),
+    toneClassName: "",
+  };
+}

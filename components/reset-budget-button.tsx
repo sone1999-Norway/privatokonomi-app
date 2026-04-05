@@ -13,7 +13,7 @@ export function ResetBudgetButton({ className }: ResetBudgetButtonProps) {
       className={className ?? "secondary-link button-reset"}
       onClick={() => {
         clearBudgetFromStorage();
-        window.location.href = "/onboarding";
+        window.location.href = "/budget";
       }}
     >
       Start på nytt

@@ -29,9 +29,9 @@ export const savingsItems = [
 ];
 
 export const recentEntries = [
-  { name: "Lønn", category: "Inntekt", amount: "+35 000 kr" },
-  { name: "Husleie", category: "Bolig", amount: "-12 000 kr" },
-  { name: "Strøm og nettleie", category: "Bolig", amount: "-1 500 kr" },
-  { name: "Dagligvarer", category: "Mat", amount: "-2 350 kr" },
-  { name: "Busskort", category: "Transport", amount: "-850 kr" },
+  { name: "Lønn", category: "Inntekt", amount: 35000 },
+  { name: "Husleie", category: "Bolig", amount: -12000 },
+  { name: "Strøm og nettleie", category: "Bolig", amount: -1500 },
+  { name: "Dagligvarer", category: "Mat", amount: -2350 },
+  { name: "Busskort", category: "Transport", amount: -850 },
 ];

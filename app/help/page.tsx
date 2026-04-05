@@ -1,7 +1,7 @@
 import { ResetBudgetButton } from "@/components/reset-budget-button";
 
 const helpPoints = [
-  "Du starter med å legge inn månedlig inntekt, faste utgifter og sparemål.",
+  "Du starter i budsjettet med å legge inn inntekt, faste utgifter og sparemål.",
   "Deretter ser du budsjettet ditt og kan registrere variable utgifter underveis.",
   "Månedsoversikten viser hvordan tallene endrer seg når du oppdaterer budsjettet.",
 ];
@@ -49,7 +49,7 @@ export default function HelpPage() {
             <h2>Nullstill testdata</h2>
             <p>
               Hvis du vil teste prototypen på nytt med andre tall, kan du slette de
-              lagrede opplysningene og starte oppsettet fra begynnelsen.
+              lagrede opplysningene og starte på nytt i budsjettet.
             </p>
             <div className="action-row">
               <ResetBudgetButton className="primary-link button-reset compact-link" />
